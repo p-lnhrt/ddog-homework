@@ -57,17 +57,17 @@ class CliArgParser:
                             type=int,
                             choices=range(min_year, max_year+1),
                             help='Year of the last baseball statistical report to include')
-        parser.add_argument('--tmp-dir',
+        parser.add_argument('--tmp',
                             default='./tmp',
                             help='Path to a local directory where the downloaded data should be temporarily stored')
-        parser.add_argument('--min-players',
+        parser.add_argument('--players',
                             default=50,
                             type=positive_integer,
                             help='Minimum number of players a team triple should contain to be displayed')
         parser.add_argument('--sink',
                             default='console',
                             help='Output sink for the computed list of triples')
-        parser.add_argument('--remove-files',
+        parser.add_argument('--remove',
                             default=True,
                             type=bool,
                             help='Whether the temporary directory and its content should be deleted after running')
