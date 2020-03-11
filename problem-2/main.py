@@ -6,6 +6,7 @@ import sys
 
 import ddog.cli
 import ddog.source
+import ddog.processing
 
 
 if __name__ == '__main__':
@@ -32,3 +33,5 @@ if __name__ == '__main__':
         files_loader = ddog.source.BaseballFilesLoader(tmp_dir_path=tmp_dir_path, config=config)
         df = files_loader.load()
 
+        triplet_counter = ddog.processing.TripletCounter(min_player_count=args['players'])
+        triplet_counts = triplet_counter.compute(df=df)
