@@ -3,7 +3,7 @@ import itertools
 import numpy as np
 
 
-class TripletCounter:
+class TripleCounter:
     def __init__(self, min_player_count):
         self.min_player_count = min_player_count
 
@@ -17,12 +17,12 @@ class TripletCounter:
 
         df_agg = df_agg[df_agg.team_count >= 3]
 
-        team_triplet_counter = dict()
+        team_triple_counter = dict()
         for player_teams in df_agg.teams:
-            player_team_triplets = itertools.combinations(player_teams, r=3)
-            for team_triplet in player_team_triplets:
-                key = frozenset(team_triplet)
-                current_triplet_count = team_triplet_counter.get(key, 0)
-                team_triplet_counter[key] = current_triplet_count + 1
+            player_team_triples = itertools.combinations(player_teams, r=3)
+            for team_triple in player_team_triples:
+                key = frozenset(team_triple)
+                current_triple_count = team_triple_counter.get(key, 0)
+                team_triple_counter[key] = current_triple_count + 1
 
-        return [(triplet, count) for triplet, count in team_triplet_counter.items() if count >= self.min_player_count]
+        return [(triple, count) for triple, count in team_triple_counter.items() if count >= self.min_player_count]
