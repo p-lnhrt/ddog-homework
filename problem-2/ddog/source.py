@@ -1,7 +1,11 @@
+import functools
 import logging
 import os
+import re
 import shutil
 import urllib
+
+import pandas as pd
 
 
 class TempDir:
@@ -43,3 +47,18 @@ class BaseballFilesDownloader:
                 logging.warning('Requesting URL "{url:}" failed returning the following HTTP error: '
                                 'Code: {code:} - {msg:}'.format(url=url, code=error.code, msg=error.msg))
                 continue
+
+
+class BaseballFilesLoader:
+    def __init__(self, tmp_dir_path, config):
+        tmp_file_regex = config['DEFAULT']['TmpFileRegex']
+        regex = re.compile(tmp_file_regex)
+
+        self.input_file_names = [os.path.join(tmp_dir_path, file_name) for file_name in os.listdir(tmp_dir_path)
+                                 if regex.match(file_name)]
+
+    def load(self):
+        dataframes = [pd.read_csv(file_name, header=None, usecols=[1, 2, 4], names=['team', 'league', 'player'])
+                      for file_name in self.input_file_names]
+
+        return functools.reduce(lambda x, y: x.append(y), dataframes)
