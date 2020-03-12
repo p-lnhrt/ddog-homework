@@ -5,6 +5,7 @@ import re
 import sys
 
 import ddog.cli
+import ddog.sink
 import ddog.source
 import ddog.processing
 
@@ -35,3 +36,7 @@ if __name__ == '__main__':
 
         triple_counter = ddog.processing.TripleCounter(min_player_count=args['players'])
         triple_counts = triple_counter.compute(df=df)
+
+        sink_factory = ddog.sink.SinkFactory(output=args['sink'])
+        sink = sink_factory.build_sink()
+        sink.write(triples=triple_counts)
