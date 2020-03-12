@@ -7,6 +7,8 @@ import urllib
 
 import pandas as pd
 
+import ddog.constants as csts
+
 
 class TempDir:
     def __init__(self, path, remove):
@@ -28,8 +30,8 @@ class TempDir:
 class BaseballFilesDownloader:
     def __init__(self, tmp_dir_path, config):
         self.tmp_dir_path = tmp_dir_path
-        self.formatted_tmp_file_name = config['DEFAULT']['TmpFileFormattedName']
-        self.formatted_url = config['DEFAULT']['FormattedSourceURL']
+        self.formatted_tmp_file_name = config[csts.DEFAULT_CONF_SECTION][csts.CONF_TMP_FILE_FMT_NAME]
+        self.formatted_url = config[csts.DEFAULT_CONF_SECTION][csts.CONF_FMT_SOURCE_URL]
 
     def download(self, years):
         for year in years:
@@ -51,7 +53,7 @@ class BaseballFilesDownloader:
 
 class BaseballFilesLoader:
     def __init__(self, tmp_dir_path, config):
-        tmp_file_regex = config['DEFAULT']['TmpFileRegex']
+        tmp_file_regex = config[csts.DEFAULT_CONF_SECTION][csts.CONF_TMP_FILE_REGEX]
         regex = re.compile(tmp_file_regex)
 
         self.input_file_names = [os.path.join(tmp_dir_path, file_name) for file_name in os.listdir(tmp_dir_path)

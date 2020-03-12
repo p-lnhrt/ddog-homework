@@ -1,13 +1,15 @@
 import abc
 import logging
 
+import ddog.constants as csts
+
 
 class SinkFactory:
     def __init__(self, output):
         self.output = output
 
     def build_sink(self):
-        if self.output == 'console':
+        if self.output == csts.CONSOLE_SINK_NAME:
             return ConsoleSink()
         else:
             return LocalFileSystemSink(path=self.output)

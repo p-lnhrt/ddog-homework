@@ -3,6 +3,8 @@ This modules gathers all the classes and functions dedicated to the parsing and 
 """
 import argparse
 
+import ddog.constants as csts
+
 
 def positive_integer(string):
     """ This functions casts an input string `string` as a positive integer.
@@ -39,35 +41,35 @@ class CliArgParser:
         Args:
             config (configparser.ConfigParser): Configuration object.
         """
-        self.min_year_arg_name = 'from'
-        self.max_year_arg_name = 'to'
+        self.min_year_arg_name = csts.CLI_MIN_YEAR_ARG
+        self.max_year_arg_name = csts.CLI_MAX_YEAR_ARG
 
-        min_year = int(config['DEFAULT']['MinYear'])
-        max_year = int(config['DEFAULT']['MaxYear'])
+        min_year = int(config[csts.DEFAULT_CONF_SECTION][csts.CONF_MIN_YEAR])
+        max_year = int(config[csts.DEFAULT_CONF_SECTION][csts.CONF_MAX_YEAR])
 
         parser = argparse.ArgumentParser()
 
-        parser.add_argument('--{}'.format(self.min_year_arg_name),
+        parser.add_argument('--{flag_name:}'.format(flag_name=self.min_year_arg_name),
                             default=min_year,
                             type=int,
                             choices=range(min_year, max_year+1),
                             help='Year of the first baseball statistical report to include')
-        parser.add_argument('--{}'.format(self.max_year_arg_name),
+        parser.add_argument('--{flag_name:}'.format(flag_name=self.max_year_arg_name),
                             default=max_year,
                             type=int,
                             choices=range(min_year, max_year+1),
                             help='Year of the last baseball statistical report to include')
-        parser.add_argument('--tmp',
+        parser.add_argument('--{flag_name:}'.format(flag_name=csts.CLI_TMP_DIR_ARG),
                             default='./tmp',
                             help='Path to a local directory where the downloaded data should be temporarily stored')
-        parser.add_argument('--players',
+        parser.add_argument('--{flag_name:}'.format(flag_name=csts.CLI_MIN_PLAYERS_ARG),
                             default=50,
                             type=positive_integer,
                             help='Minimum number of players a team triple should contain to be displayed')
-        parser.add_argument('--sink',
-                            default='console',
+        parser.add_argument('--{flag_name:}'.format(flag_name=csts.CLI_SINK_ARG),
+                            default=csts.CONSOLE_SINK_NAME,
                             help='Output sink for the computed list of triples')
-        parser.add_argument('--remove',
+        parser.add_argument('--{flag_name:}'.format(flag_name=csts.CLI_REMOVE_FILES_ARG),
                             default=True,
                             type=bool,
                             help='Whether the temporary directory and its content should be deleted after running')
