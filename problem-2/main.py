@@ -24,7 +24,7 @@ if __name__ == '__main__':
     requested_year_range = range(args[csts.CLI_MIN_YEAR_ARG], args[csts.CLI_MAX_YEAR_ARG] + 1)
     tmp_file_regex = config[csts.DEFAULT_CONF_SECTION][csts.CONF_TMP_FILE_REGEX]
     regex = re.compile(tmp_file_regex)
-    path, remove = args[csts.CLI_TMP_DIR_ARG], args[csts.CLI_REMOVE_FILES_ARG]
+    path, remove = args[csts.CLI_TMP_DIR_ARG], not args[csts.CLI_KEEP_FILES_ARG]
     with ddog.source.TempDir(path=path, remove=remove) as tmp_dir_path:
         available_years = [int(regex.search(file_name).group(1)) for file_name in os.listdir(tmp_dir_path)
                            if regex.match(file_name)]

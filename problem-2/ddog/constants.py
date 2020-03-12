@@ -13,7 +13,7 @@ CLI_MAX_YEAR_ARG = 'to'
 CLI_TMP_DIR_ARG = 'tmp'
 CLI_MIN_PLAYERS_ARG = 'players'
 CLI_SINK_ARG = 'sink'
-CLI_REMOVE_FILES_ARG = 'remove'
+CLI_KEEP_FILES_ARG = 'keep'
 
 # Other constants
 CONSOLE_SINK_NAME = 'console'

@@ -69,10 +69,10 @@ class CliArgParser:
         parser.add_argument('--{flag_name:}'.format(flag_name=csts.CLI_SINK_ARG),
                             default=csts.CONSOLE_SINK_NAME,
                             help='Output sink for the computed list of triples')
-        parser.add_argument('--{flag_name:}'.format(flag_name=csts.CLI_REMOVE_FILES_ARG),
-                            default=True,
-                            type=bool,
-                            help='Whether the temporary directory and its content should be deleted after running')
+        parser.add_argument('--{flag_name:}'.format(flag_name=csts.CLI_KEEP_FILES_ARG),
+                            default=False,
+                            action='store_true',
+                            help='Whether the temporary directory and its content should be kept after running')
 
         self.parser = parser
 
