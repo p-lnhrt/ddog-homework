@@ -30,8 +30,10 @@ if __name__ == '__main__':
                            if regex.match(file_name)]
         missing_years = set(requested_year_range).difference(available_years)
 
-        files_downloader = ddog.source.BaseballFilesDownloader(tmp_dir_path=tmp_dir_path, config=config)
-        files_downloader.download(years=missing_years)
+        if missing_years:
+            logging.info('Starts downloading files corresponding to {:d} missing years'.format(len(missing_years)))
+            files_downloader = ddog.source.BaseballFilesDownloader(tmp_dir_path=tmp_dir_path, config=config)
+            files_downloader.download(years=missing_years)
 
         files_loader = ddog.source.BaseballFilesLoader(tmp_dir_path=tmp_dir_path, config=config)
         df = files_loader.load()

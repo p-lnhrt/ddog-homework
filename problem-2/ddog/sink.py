@@ -48,4 +48,5 @@ class LocalFileSystemSink(Sink):
     @preprocess_triples
     def write(self, triples):
         with open(self.path, 'w') as file_obj:
+            logging.info('Writing results to {path:}'.format(path=self.path))
             file_obj.write('\n'.join(triples))

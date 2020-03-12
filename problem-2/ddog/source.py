@@ -18,13 +18,15 @@ class TempDir:
     def __enter__(self):
         try:
             os.mkdir(self.path)
+            logging.info('Created temporary directory: {path:}'.format(path=self.path))
         except FileExistsError:
-            logging.info('Temporary directory {} already exists'.format(self.path))
+            logging.info('Temporary directory {path:} already exists'.format(path=self.path))
         return self.path
 
     def __exit__(self, exc_type, exc_value, traceback):
         if self.remove:
             shutil.rmtree(self.path, ignore_errors=True)
+            logging.info('Removed temporary directory: {path:}'.format(path=self.path))
 
 
 class BaseballFilesDownloader:
