@@ -1,3 +1,4 @@
 python==3.6.8
+numpy==1.18.1
 pandas=0.25.0
 pytest==4.4.0
