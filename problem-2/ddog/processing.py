@@ -12,13 +12,13 @@ class TripleCounter:
 
         df['team-id'] = np.where(df.league.isna(), df.team, df.team + '-' + df.league)
 
-        df_agg = df.groupby('player', as_index=False) \
+        df = df.groupby('player', as_index=False) \
             .agg(team_count=('team-id', 'count'), teams=('team-id', list))
 
-        df_agg = df_agg[df_agg.team_count >= 3]
+        df = df[df.team_count >= 3]
 
         team_triple_counter = dict()
-        for player_teams in df_agg.teams:
+        for player_teams in df.teams:
             player_team_triples = itertools.combinations(player_teams, r=3)
             for team_triple in player_team_triples:
                 key = frozenset(team_triple)
