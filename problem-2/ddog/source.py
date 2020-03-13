@@ -54,15 +54,35 @@ class BaseballFilesDownloader:
 
 
 class BaseballFilesLoader:
-    def __init__(self, tmp_dir_path, config):
-        tmp_file_regex = config[csts.DEFAULT_CONF_SECTION][csts.CONF_TMP_FILE_REGEX]
-        regex = re.compile(tmp_file_regex)
+    def __init__(self, tmp_dir_path, config, min_year, max_year):
+        self.tmp_dir_path = tmp_dir_path
+        self.config = config
+        self.min_year = min_year
+        self.max_year = max_year
 
-        self.input_file_names = [os.path.join(tmp_dir_path, file_name) for file_name in os.listdir(tmp_dir_path)
-                                 if regex.match(file_name)]
+        tmp_file_regex = config[csts.DEFAULT_CONF_SECTION][csts.CONF_TMP_FILE_REGEX]
+        self.regex = re.compile(tmp_file_regex)
+
+    def _get_missing_years(self):
+        requested_year_range = range(self.min_year, self.max_year + 1)
+        available_years = [int(self.regex.search(file_name).group(1)) for file_name in os.listdir(self.tmp_dir_path)
+                           if self.regex.match(file_name)]
+        return set(requested_year_range).difference(available_years)
+
+    def _download_years(self, years):
+        logging.info('Starts downloading files corresponding to {:d} missing years'.format(len(years)))
+        files_downloader = BaseballFilesDownloader(tmp_dir_path=self.tmp_dir_path, config=self.config)
+        files_downloader.download(years=years)
 
     def load(self):
+        missing_years = self._get_missing_years()
+        if missing_years:
+            self._download_years(years=missing_years)
+
+        input_file_names = [os.path.join(self.tmp_dir_path, file_name) for file_name in os.listdir(self.tmp_dir_path)
+                            if self.regex.match(file_name)]
+
         dataframes = [pd.read_csv(file_name, header=None, usecols=[1, 2, 4], names=['team', 'league', 'player'])
-                      for file_name in self.input_file_names]
+                      for file_name in input_file_names]
 
         return functools.reduce(lambda x, y: x.append(y), dataframes)
