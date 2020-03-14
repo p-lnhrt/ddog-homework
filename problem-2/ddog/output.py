@@ -24,7 +24,7 @@ def preprocess_triples(func):
     def wrapper(self, triples):
         if triples:
             sorted_triples = sorted(triples, key=lambda x: x[1], reverse=True)
-            formatted_triples = ['Team triple: {} - Count: {:d}'.format('|'.join(triple), count)
+            formatted_triples = ['Team triple: {} - Count: {:d}'.format('|'.join(sorted(triple)), count)
                                  for triple, count in sorted_triples]
             func(self, formatted_triples)
         else:
