@@ -28,9 +28,9 @@ stored on the local file system.
 **All input files are expected to be CSV text files all with the same number of columns and column ordering.**
 
 ## 2. Execution environment
-This project has been developed using (`conda`)[https://docs.conda.io/en/latest/] package manager (version 4.6.11). To 
+This project has been developed using [`conda`](https://docs.conda.io/en/latest/) package manager (version 4.6.11). To 
 ensure our projects runs using the appropriate dependencies, we first create and activate a dedicated Python (virtual)
-execution environment using the projects *requirements.txt* file and the following commands:
+execution environment using the project's *requirements.txt* file and the following commands:
 
 ```bash
 conda create -y -c conda-forge -n <env-friendly-name> --file </path/to/requirements.txt>
