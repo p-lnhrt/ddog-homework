@@ -50,29 +50,35 @@ class CliArgParser:
         parser = argparse.ArgumentParser()
 
         parser.add_argument('--{flag_name:}'.format(flag_name=self.min_year_arg_name),
+                            metavar='YYYY',
                             default=min_year,
                             type=int,
                             choices=range(min_year, max_year+1),
-                            help='Year of the first baseball statistical report to include')
+                            help='Year of the first baseball statistical report to include (Default: %(default)s)')
         parser.add_argument('--{flag_name:}'.format(flag_name=self.max_year_arg_name),
+                            metavar='YYYY',
                             default=max_year,
                             type=int,
                             choices=range(min_year, max_year+1),
-                            help='Year of the last baseball statistical report to include')
+                            help='Year of the last baseball statistical report to include (Default: %(default)s)')
         parser.add_argument('--{flag_name:}'.format(flag_name=csts.CLI_TMP_DIR_ARG),
                             default='./tmp',
-                            help='Path to a local directory where the downloaded data should be temporarily stored')
+                            help='Path to a local directory where the downloaded data should be temporarily stored '
+                                 '(Default: %(default)s)')
         parser.add_argument('--{flag_name:}'.format(flag_name=csts.CLI_MIN_PLAYERS_ARG),
                             default=50,
                             type=positive_integer,
-                            help='Minimum number of players a team triple should contain to be displayed')
+                            help='Minimum number of players a team triple should contain to be returned '
+                                 '(Default: %(default)s)')
         parser.add_argument('--{flag_name:}'.format(flag_name=csts.CLI_SINK_ARG),
                             default=csts.CONSOLE_SINK_NAME,
-                            help='Output sink for the computed list of triples')
+                            help='Output sink for the computed list of triples. Either "%(default)s" (default) to '
+                                 'print to the standard output or a local path to an output text file')
         parser.add_argument('--{flag_name:}'.format(flag_name=csts.CLI_KEEP_FILES_ARG),
                             default=False,
                             action='store_true',
-                            help='Whether the temporary directory and its content should be kept after running')
+                            help='Whether the temporary directory and its content should be kept after running '
+                                 '(Default: Content is dropped)')
 
         self.parser = parser
 

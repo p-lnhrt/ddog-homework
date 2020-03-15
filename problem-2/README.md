@@ -18,9 +18,9 @@ Six optional flags can be used to tune the application's behavior:
 * `--to`: Year of the last baseball statistical report to include (Default: 2014).
 * `--tmp`: Path to a local directory where the downloaded data should be temporarily stored (Default: ./tmp).
 * `--players`: Minimum number of players a team triple should contain to be returned (Default: 50).
-* `--keep`: Whether the temporary directory and its content should be kept after running (Default: Content is dropped).
 * `--sink`: Output sink for the computed list of triples. Either "console" (default) to print to the standard output or a 
 local path to an output text file.
+* `--keep`: Whether the temporary directory and its content should be kept after running (Default: Content is dropped).
 
 Requested year range should be included within the 1871-2014 range.
 
