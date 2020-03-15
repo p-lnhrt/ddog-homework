@@ -1,0 +1,7 @@
+python==3.6.8
+ipykernel==5.1.0
+matplotlib==3.2.0
+numpy==1.18.1
+pandas=0.25.0
+scipy==1.2.1
+seaborn==0.10.0
