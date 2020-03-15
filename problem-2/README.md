@@ -4,7 +4,18 @@
 # Datadog data science homework - Problem 2
 
 ## 1. General description
-This projects consists in: 
+This application downloads baseball-statistics files to the local file system, computes for each team triple how many
+players played for these three teams and returns the triples with a minimal number of player. The results are either printed
+to the standard output or written to a text file. 
+ 
+**Important notice**: Team identification
+A quick data analysis show that using the team trigram (ex: "PIT") is not enough to uniquely identify a baseball team. Two
+teams ("CLE" and "HOU") have indeed two sub-teams playing in two different leagues ("AL" and "NL"). This is why we chose
+to use the concatenation of the team's trigram and the team's league name to uniquely identify each single team (Ex: "HOU-NL"). 
+The league name is sometimes not available (for team "BL1" for example). In these cases, the team's ID coincides with the 
+team's trigram. 
+
+The projects consists in: 
 * An entry-point file *main.py* used to launch the application from the command line (See Sections 4 & 5).
 * A Python package named *ddog* that gathers all the objects and functions (and their associated unit tests - See 
 Section 6) the application is made from. In order for the application to run in a Python environment (See Section 2), 
