@@ -26,3 +26,5 @@ Problem 1 can be safely run using this kernel. You can now start a Jupyter Noteb
 jupyter notebook
 ```
 
+Once the Notebook Dashboard is opened in your browser, start the notebook *datadog-ds-problem1-plienhart.ipynb*.
+
