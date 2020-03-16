@@ -73,7 +73,8 @@ class CliArgParser:
         parser.add_argument('--{flag_name:}'.format(flag_name=csts.CLI_SINK_ARG),
                             default=csts.CONSOLE_SINK_NAME,
                             help='Output sink for the computed list of triples. Either "%(default)s" (default) to '
-                                 'print to the standard output or a local path to an output text file')
+                                 'print to the standard output or a local path to an output text file in an '
+                                 'already-existing directory (Ex: /path/to/dir/results.txt).')
         parser.add_argument('--{flag_name:}'.format(flag_name=csts.CLI_KEEP_FILES_ARG),
                             default=False,
                             action='store_true',

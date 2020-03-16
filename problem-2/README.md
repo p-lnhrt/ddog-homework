@@ -74,6 +74,8 @@ In order to run our program from the command line, the built package needs to be
 pip install --no-index dist/ddog-0.1.0-py3-none-any.whl
 ```
 
+Now you are ready to run the application from the command-line (See Section 5). 
+
 ## 4. Command-line interface (CLI)
 Running the application using the command line interface (See example in Section 5) consists in running in entry-point
 script *main.py* using the appropriate Python binary: `python main.py`
@@ -84,10 +86,13 @@ Six optional flags can be used to tune the application's behavior:
 * `--tmp`: Path to a local directory where the downloaded data should be temporarily stored (Default: *./tmp*).
 * `--players`: Minimum number of players a team triple should contain to be returned (Default: 50).
 * `--sink`: Output sink for the computed list of triples. Either "console" (default) to print to the standard output or a 
-local path to an output text file.
+local path to an output text file in an already-existing directory (Ex: */path/to/dir/results.txt*).
 * `--keep`: Whether the temporary directory and its content should be kept after running (Default: Content is dropped).
 
 Requested year range should be included within the 1871-2014 range.
+
+**WARNING**: The temporary directory where the data is downloaded is removed by default (unless the `--keep` flag is added)
+whether an exception is raised or not. In particular, do not write the results in this specific temporary directory.
 
 CLI documentation is also available through:
 ```bash
