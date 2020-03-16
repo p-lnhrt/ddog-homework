@@ -6,6 +6,8 @@ import logging
 
 import ddog.constants as csts
 
+HEADER = 'Team triple         Count\n-------------------------'
+
 
 class SinkFactory:
     """This factory class builds and returns the appropriate `Sink` object based on its `output` attribute.
@@ -61,7 +63,7 @@ def preprocess_triples(func):
     def wrapper(self, triples):
         if triples:
             sorted_triples = sorted(triples, key=lambda x: x[1], reverse=True)
-            formatted_triples = ['Team triple: {} - Count: {:d}'.format('|'.join(sorted(triple)), count)
+            formatted_triples = ['{triple:}, {count:d}'.format(triple='|'.join(sorted(triple)), count=count)
                                  for triple, count in sorted_triples]
             func(self, formatted_triples)
         else:
@@ -79,8 +81,9 @@ class ConsoleSink(Sink):
         """ Concrete implementation of `Sink.write` that allows to write baseball triples to the standard output.
 
         Args:
-            triples (list[(frozenset, int)]): List of (baseball team triple, player count) tuples.
+            triples (list[str]): List of formatted (baseball team triple, player count) tuples.
         """
+        print(HEADER)
         for triple in triples:
             print(triple)
 
@@ -106,8 +109,8 @@ class LocalFileSystemSink(Sink):
         file system.
 
         Args:
-            triples (list[(frozenset, int)]): List of (baseball team triple, player count) tuples.
+            triples (list[str]): List of formatted (baseball team triple, player count) tuples.
         """
         with open(self.path, 'w') as file_obj:
             logging.info('Writing results to {path:}'.format(path=self.path))
-            file_obj.write('\n'.join(triples))
+            file_obj.write('\n'.join([HEADER] + triples))
