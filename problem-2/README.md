@@ -39,13 +39,13 @@ stored on the local file system.
 **All input files are expected to be CSV text files all with the same number of columns and column ordering.**
 
 ## 2. Execution environment
-This project has been developed using [`conda`](https://docs.conda.io/en/latest/) package manager (version 4.6.11). To 
-ensure our projects runs using the appropriate dependencies, we first create and activate a dedicated Python (virtual)
-execution environment using the project's *requirements.txt* file and the following commands:
+To ensure our projects runs using the appropriate dependencies, we first create and activate a dedicated Python (virtual)
+execution environment using the project's *requirements.txt* file. Change your current directory to the problem's 
+directory and run the following commands:
 
 ```bash
-conda create -y -c conda-forge -n <env-friendly-name> --file </path/to/requirements.txt>
-conda activate <env-friendly-name>
+conda create -y -c conda-forge -n py36-problem-2 --file requirements.txt
+conda activate py36-problem-2
 ```
 
 Starting from this moment, **we always assume that the current Python execution environment is the project's dedicated
@@ -71,7 +71,7 @@ python setup.py bdist_wheel
 
 In order to run our program from the command line, the built package needs to be installed in our virtual environment:
 ```bash
-pip install --no-index </path/to/wheel_file.whl>
+pip install --no-index dist/ddog-0.1.0-py3-none-any.whl
 ```
 
 ## 4. Command-line interface (CLI)
@@ -91,7 +91,7 @@ Requested year range should be included within the 1871-2014 range.
 
 CLI documentation is also available through:
 ```bash
-python main.py -h|--help
+python main.py --help
 ```
 
 ## 5. Running the application
