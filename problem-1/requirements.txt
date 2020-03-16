@@ -1,6 +1,7 @@
 python==3.6.8
 ipykernel==5.1.0
 matplotlib==3.2.0
+notebook==5.7.8
 numpy==1.18.1
 pandas=0.25.0
 scipy==1.2.1
