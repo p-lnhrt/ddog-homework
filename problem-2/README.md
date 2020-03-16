@@ -111,18 +111,20 @@ python main.py --from 1871 --to 2014 --tmp ./tmp --players 50 --keep --sink cons
 
 Aside from the application logs, output the the standard output should look like this:
 ```bash
-Team triple: CIN-NL|PHI-NL|SLN-NL - Count: 84
-Team triple: CHN-NL|CIN-NL|SLN-NL - Count: 81
-Team triple: CHN-NL|PHI-NL|SLN-NL - Count: 74
-Team triple: CIN-NL|PIT-NL|SLN-NL - Count: 70
-Team triple: CHN-NL|CIN-NL|PIT-NL - Count: 61
-Team triple: CHN-NL|CIN-NL|PHI-NL - Count: 60
-Team triple: CHN-NL|PHI-NL|PIT-NL - Count: 56
-Team triple: BOS-AL|CHA-AL|CLE-AL - Count: 56
-Team triple: CIN-NL|PHI-NL|PIT-NL - Count: 56
-Team triple: PHI-NL|PIT-NL|SLN-NL - Count: 55
-Team triple: CHA-AL|CLE-AL|NYA-AL - Count: 53
-Team triple: CHN-NL|PIT-NL|SLN-NL - Count: 53
+Team triple         Count
+-------------------------
+CIN-NL|PHI-NL|SLN-NL, 84
+CHN-NL|CIN-NL|SLN-NL, 81
+CHN-NL|PHI-NL|SLN-NL, 74
+CIN-NL|PIT-NL|SLN-NL, 70
+CHN-NL|CIN-NL|PIT-NL, 61
+CHN-NL|CIN-NL|PHI-NL, 60
+CHN-NL|PHI-NL|PIT-NL, 56
+BOS-AL|CHA-AL|CLE-AL, 56
+CIN-NL|PHI-NL|PIT-NL, 56
+PHI-NL|PIT-NL|SLN-NL, 55
+CHA-AL|CLE-AL|NYA-AL, 53
+CHN-NL|PIT-NL|SLN-NL, 53
 ```
 
 **Important notice**: The *config.ini* file must be located in the application's working directory.
