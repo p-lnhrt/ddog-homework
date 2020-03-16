@@ -32,7 +32,8 @@ class TripleCounter:
             list[(frozenset, int)]: List of (team triple, player count) where each player count is greater or equal to
             the value of the `min_player_count` attribute.
         """
-        df = df.drop_duplicates()
+        df = df.drop_duplicates()\
+            .copy()  # We force the copy to avoid raising a SettingWithCopyWarning when creating the 'team-id' column
 
         df['team-id'] = np.where(df.league.isna(), df.team, df.team + '-' + df.league)
 
