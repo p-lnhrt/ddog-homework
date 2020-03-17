@@ -37,7 +37,7 @@ class TripleCounter:
 
         df['team-id'] = np.where(df.league.isna(), df.team, df.team + '-' + df.league)
 
-        df = df.groupby('player', as_index=False) \
+        df = df.groupby('player-id', as_index=False) \
             .agg(team_count=('team-id', 'count'), teams=('team-id', list))
 
         df = df[df.team_count >= 3]

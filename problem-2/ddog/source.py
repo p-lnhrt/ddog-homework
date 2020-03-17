@@ -160,7 +160,7 @@ class BaseballFilesLoader:
         input_file_names = [os.path.join(self.tmp_dir_path, file_name) for file_name in os.listdir(self.tmp_dir_path)
                             if self.regex.match(file_name)]
 
-        dataframes = [pd.read_csv(file_name, header=None, usecols=[1, 2, 4], names=['team', 'league', 'player'])
+        dataframes = [pd.read_csv(file_name, header=None, usecols=[1, 2, 3], names=['team', 'league', 'player-id'])
                       for file_name in input_file_names]
 
         return functools.reduce(lambda x, y: x.append(y), dataframes)
