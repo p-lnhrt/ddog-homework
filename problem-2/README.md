@@ -141,3 +141,26 @@ python -m pytest ./ddog/tests/test_cli.py
 ```
 
 ## 7. Complexity analysis
+Let $n$, $p$ and $k$ the numbers of records, unique players and unique teams in the input dataset respectively.
+
+During the first stage the computation, the loaded dataset goes through the following transformations:
+* Dropping duplicates: This operation can be performed with a $O(n)$ time and space complexity. Worse case scenario, there
+are no duplicates, the number of records remains unchanged after the transformation.
+* Adding a new column using a simple filter: This step has a $O(n)$ time and a $O(1)$ space complexity.
+* Aggregation where the two aggregation operations are not more complex than a count: This operation can be performed 
+with a $O(n)$ time and space complexity (at worse, if no duplicates where found before). Space complexity in particular 
+is at this stage still $O(n)$ as we collect the team IDs in lists which is equivalent to reshaping the data.
+* Filter on the team counts: This step has a $O(p)$ time and a $O(1)$ space complexity.
+
+First stage has therefore a $O(n)$ time and space complexity.
+
+The second stage of the computation consists for each player who played in at least 3 teams (worst case: $p$ players) to 
+generate all the 3-combinations from the teams the player played in (worst case: each player played in each of
+the $k$ teams) and update a counter (a dictionary) which the produced combinations. The counter is finally filtered over 
+its counts.
+
+Notice: Using a dictionary as counter allows us to take advantage of a $O(1)$ time complexity on get and set operations.
+
+$\binom(a, b) ~ O(a^{b})$ for $a$ big enough. Generating the combinations is the most expensive operation here 
+($O(k^3)$). Worst case scenario for the second stage has therefore a $O(pk^3)$ time complexity and a $O(k^3)$ space 
+complexity (the generated dictionary/counter has at most $O(k^3)$ key-value pairs).
