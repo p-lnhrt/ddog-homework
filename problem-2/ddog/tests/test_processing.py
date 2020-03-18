@@ -12,7 +12,7 @@ def test_triple_counter_compute():
     df = pd.DataFrame(data={
         'league': 'NL',
         'team': ['A', 'B', 'C', 'A', 'A', 'B', 'C', 'A', 'B', 'C'],
-        'player': ['Bob', 'Bob', 'Bob', 'Ben', 'Joe', 'Joe', 'Joe', 'Pete', 'Pete', 'Pete']
+        'player-id': ['Bob', 'Bob', 'Bob', 'Ben', 'Joe', 'Joe', 'Joe', 'Pete', 'Pete', 'Pete']
     })
 
     triple_counter = ddog.processing.TripleCounter(min_player_count=2)
@@ -30,7 +30,7 @@ def test_triple_counter_compute_no_triples():
     df = pd.DataFrame(data={
         'league': 'NL',
         'team': ['A', 'B', 'C', 'A', 'C', 'D', 'E', 'D', 'B', 'C'],
-        'player': ['Bob', 'Bob', 'Bob', 'Ben', 'Joe', 'Joe', 'Joe', 'Pete', 'Pete', 'Pete']
+        'player-id': ['Bob', 'Bob', 'Bob', 'Ben', 'Joe', 'Joe', 'Joe', 'Pete', 'Pete', 'Pete']
     })
 
     triple_counter = ddog.processing.TripleCounter(min_player_count=2)

@@ -13,9 +13,7 @@ def test_preprocess_triples():
     func = mock.Mock()
     decorated_func = ddog.output.preprocess_triples(func)
     triples = [(frozenset(['A', 'B', 'C']), 4), (frozenset(['D', 'E', 'F']), 1), (frozenset(['G', 'H', 'I']), 10)]
-    formatted_triples = ['Team triple: G|H|I - Count: 10',
-                         'Team triple: A|B|C - Count: 4',
-                         'Team triple: D|E|F - Count: 1']
+    formatted_triples = ['G|H|I, 10', 'A|B|C, 4', 'D|E|F, 1']
 
     decorated_func(self=mock_sink, triples=triples)
     func.assert_called_with(mock_sink, formatted_triples)
