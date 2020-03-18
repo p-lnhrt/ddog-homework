@@ -10,7 +10,18 @@ your current directory to the problem's directory and run the following commands
 
 ```bash
 conda create -y -c conda-forge -n py36-problem-1 --file requirements.txt
-conda activate problem-1
+```
+
+Activate the environment using:
+
+```bash
+conda activate py36-problem-1
+```
+
+If the above command requires extra `conda` configurations, you can still use:
+
+```bash
+source activate /opt/anaconda/envs/py36-problem-1 
 ```
 
 We now need to create a Jupyter kernel for this execution environment using the following command:

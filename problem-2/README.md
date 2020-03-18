@@ -111,7 +111,18 @@ directory and run the following commands:
 
 ```bash
 conda create -y -c conda-forge -n py36-problem-2 --file requirements.txt
+```
+
+Activate the environment using:
+
+```bash
 conda activate py36-problem-2
+```
+
+If the above command requires extra `conda` configurations, you can still use:
+
+```bash
+source activate /opt/anaconda/envs/py36-problem-2
 ```
 
 Starting from this moment, **we always assume that the current Python execution environment is the project's dedicated
@@ -137,7 +148,7 @@ python setup.py bdist_wheel
 
 In order to run our program from the command line, the built package needs to be installed in our virtual environment:
 ```bash
-pip install --no-index dist/ddog-0.1.0-py3-none-any.whl
+pip install --no-index dist/ddog-0.0.1-py3-none-any.whl
 ```
 
 Now you are ready to run the application from the command-line (See Section 5). 
