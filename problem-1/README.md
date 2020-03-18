@@ -5,7 +5,7 @@
 
 ## Execution environment
 To ensure our notebook runs using the appropriate dependencies and that its results are reproducible, we first create 
-and activate a dedicated Python (virtual) execution environment using the problem's  *requirements.txt* file. Change 
+and activate a dedicated Python (virtual) runtime environment using the problem's *requirements.txt* file. Change 
 your current directory to the problem's directory and run the following commands:
 
 ```bash
@@ -26,5 +26,6 @@ Problem 1 can be safely run using this kernel. You can now start a Jupyter Noteb
 jupyter notebook
 ```
 
-Once the Notebook Dashboard is opened in your browser, start the notebook *datadog-ds-problem1-plienhart.ipynb*.
+Once the Notebook Dashboard is opened in your browser, start the notebook *datadog-ds-problem1-plienhart.ipynb* using
+the above-built Jupyter kernel.
 
