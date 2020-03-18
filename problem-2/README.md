@@ -3,18 +3,12 @@
 
 # Datadog data science homework - Problem 2
 
-## 1. General description
+## 1. Project's description
+## 1.1 General description
 This application downloads baseball-statistics files to the local file system, computes for each team triple how many
 players played for these three teams and returns the triples with a minimal number of player. The results are either printed
 to the standard output or written to a text file. 
  
-**Important notice**: Team identification
-A quick data analysis show that using the team trigram (ex: "PIT") is not enough to uniquely identify a baseball team. Two
-teams ("CLE" and "HOU") have indeed two sub-teams playing in two different leagues ("AL" and "NL"). This is why we chose
-to use the concatenation of the team's trigram and the team's league name to uniquely identify each single team (Ex: "HOU-NL"). 
-The league name is sometimes not available (for team "BL1" for example). In these cases, the team's ID coincides with the 
-team's trigram. 
-
 The projects consists in: 
 * An entry-point file *main.py* used to launch the application from the command line (See Sections 4 & 5).
 * A Python package named *ddog* that gathers all the objects and functions (and their associated unit tests - See 
@@ -37,6 +31,77 @@ stored on the local file system.
 * `FormattedSourceURL`: HTTP source URL for baseball-statistics files (as a Python formatted string).
 
 **All input files are expected to be CSV text files all with the same number of columns and column ordering.**
+
+## 1.2 Design overview
+In addition to the `main.py` entry-point script. The project consists in a `ddog` Python package made of 4 Python modules:
+* `cli.py`: This module gathers every function and object related to the parsing and validation of command-line arguments.
+In particular, we implemented an augmented argument parser object (class `CliArgParser`). 
+* `source.py`: This module gathers every function and object related to the downloading and reading of baseball-statistics
+CSV files: 
+     * All the logic related to the loading of CSV files into a `pandas.DataFrame` object is encapsulated in 
+     the `BaseballFilesLoader` object.
+     * All the logic related to the downloading of CSV files using a formatted HTTP URL is encapsulated in the 
+     `BaseballFilesDownloader` object.
+     * All the operations related to the management of a local temporary directory (create if it does not exists, remove
+     if requested) are implemented using a context manager (object `TempDir`).
+* `processing.py`: This module gather all the "business logic", i.e.: the code dedicated to the specific computation of the
+triples (encapsulated in the `TripleCounter` object). The `compute` method of the `TripleCounter` object expects a 
+`pandas.DataFrame` and returns its results as a list (possibly empty) of (`frozenset`, `int`) tuples.
+* `output.py`: This module gather all the logic related to the formatting and writing of the processing results to the chosen
+sink. The appropriate sink object (currently two implementations: `ConsoleSink` and `LocalFileSystemSink`) is returned
+by the factory object `SinkFactory`. Each sink implementation must implement the sink interface described by the `Sink`
+abstract base class which consists of a single `write` method which expects a list (possibly empty) of 
+(`frozenset`, `int`) tuples.
+
+## 1.3 Triple count computation 
+### 1.3.1 Team and players identification
+A quick data analysis show that using the team trigram (ex: "PIT") is not enough to uniquely identify a baseball team. Two
+teams ("CLE" and "HOU") have indeed two sub-teams playing in two different leagues ("AL" and "NL"). This is why we chose
+to use the concatenation of the team's trigram and the team's league name to uniquely identify each single team (Ex: "HOU-NL"). 
+The league name is sometimes not available (for team "BL1" for example). In these cases, the team's ID coincides with the 
+team's trigram. 
+
+To avoid issues raised by possible namesakes, we chose to use the player ID code field instead of the player name to 
+uniquely identify players.
+
+### 1.3.2 Triples computation strategy
+The code dedicated to the triples' computation can be found in the `ddog.processing.TripleCounter.compute` method.
+
+Section 1.3.1 showed that we actually only need 3 columns from the input files. To spare memory space, the `pandas` CSV
+reader has been set up such that only the required columns are loaded into memory. 
+
+The first stage of the computation is dedicated to get for each unique player its lists of played teams. Players with a 
+list of less than 3 teams are discarded since no triple can be generated with less than three teams. The second stage of
+the computation consists in building a triple counter by iterating over the players returned by the first stage. For each
+player, we generate all the 3-combinations (triples) from its played-team list and update the triple counter. The counter
+is a dictionary the keys of which are the triples (implemented as 3-element immutable `frozenset` objects) and the values
+of which are the triple counts. The counter object is finally filtered to keep only the triples with the required minimum
+count.
+
+## 1.4 Complexity analysis
+Let $n$, $p$ and $k$ the numbers of records, unique players and unique teams in the input dataset respectively.
+
+During the first stage the computation, the loaded dataset goes through the following transformations:
+* Dropping duplicates: This operation can be performed with a $O(n)$ time and space complexity. Worse case scenario, there
+are no duplicates, the number of records remains unchanged after the transformation.
+* Adding a new column using a simple filter: This step has a $O(n)$ time and a $O(1)$ space complexity.
+* Aggregation where the two aggregation operations are not more complex than a count: This operation can be performed 
+with a $O(n)$ time and space complexity (at worse, if no duplicates where found before). Space complexity in particular 
+is at this stage still $O(n)$ as we collect the team IDs in lists which is equivalent to reshaping the data.
+* Filter on the team counts: This step has a $O(p)$ time and a $O(1)$ space complexity.
+
+First stage has therefore a $O(n)$ time and space complexity.
+
+The second stage of the computation consists for each player who played in at least 3 teams (worst case: $p$ players) to 
+generate all the 3-combinations from the teams the player played in (worst case: each player played in each of
+the $k$ teams) and update a counter (a dictionary) which the produced combinations. The counter is finally filtered over 
+its counts.
+
+Notice: Using a dictionary as counter allows us to take advantage of a $O(1)$ time complexity on get and set operations.
+
+$\binom(a, b) ~ O(a^{b})$ for $a$ big enough. Generating the combinations is the most expensive operation here 
+($O(k^3)$). Worst case scenario for the second stage has therefore a $O(pk^3)$ time complexity and a $O(k^3)$ space 
+complexity (the generated dictionary/counter has at most $O(k^3)$ key-value pairs).
 
 ## 2. Execution environment
 To ensure our projects runs using the appropriate dependencies, we first create and activate a dedicated Python (virtual)
@@ -139,28 +204,3 @@ To run a specific test module, simply add its path to the preceding command. For
 ```bash
 python -m pytest ./ddog/tests/test_cli.py
 ```
-
-## 7. Complexity analysis
-Let $n$, $p$ and $k$ the numbers of records, unique players and unique teams in the input dataset respectively.
-
-During the first stage the computation, the loaded dataset goes through the following transformations:
-* Dropping duplicates: This operation can be performed with a $O(n)$ time and space complexity. Worse case scenario, there
-are no duplicates, the number of records remains unchanged after the transformation.
-* Adding a new column using a simple filter: This step has a $O(n)$ time and a $O(1)$ space complexity.
-* Aggregation where the two aggregation operations are not more complex than a count: This operation can be performed 
-with a $O(n)$ time and space complexity (at worse, if no duplicates where found before). Space complexity in particular 
-is at this stage still $O(n)$ as we collect the team IDs in lists which is equivalent to reshaping the data.
-* Filter on the team counts: This step has a $O(p)$ time and a $O(1)$ space complexity.
-
-First stage has therefore a $O(n)$ time and space complexity.
-
-The second stage of the computation consists for each player who played in at least 3 teams (worst case: $p$ players) to 
-generate all the 3-combinations from the teams the player played in (worst case: each player played in each of
-the $k$ teams) and update a counter (a dictionary) which the produced combinations. The counter is finally filtered over 
-its counts.
-
-Notice: Using a dictionary as counter allows us to take advantage of a $O(1)$ time complexity on get and set operations.
-
-$\binom(a, b) ~ O(a^{b})$ for $a$ big enough. Generating the combinations is the most expensive operation here 
-($O(k^3)$). Worst case scenario for the second stage has therefore a $O(pk^3)$ time complexity and a $O(k^3)$ space 
-complexity (the generated dictionary/counter has at most $O(k^3)$ key-value pairs).
