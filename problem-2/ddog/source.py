@@ -119,6 +119,7 @@ class BaseballFilesLoader:
         self.config = config
         self.min_year = min_year
         self.max_year = max_year
+        self.tmp_file_formatted_name = config[csts.DEFAULT_CONF_SECTION][csts.CONF_TMP_FILE_FMT_NAME]
 
         tmp_file_regex = config[csts.DEFAULT_CONF_SECTION][csts.CONF_TMP_FILE_REGEX]
         self.regex = re.compile(tmp_file_regex)
@@ -157,8 +158,8 @@ class BaseballFilesLoader:
         if missing_years:
             self._download_years(years=missing_years)
 
-        input_file_names = [os.path.join(self.tmp_dir_path, file_name) for file_name in os.listdir(self.tmp_dir_path)
-                            if self.regex.match(file_name)]
+        input_file_names = [os.path.join(self.tmp_dir_path, self.tmp_file_formatted_name.format(year=year))
+                            for year in range(self.min_year, self.max_year + 1)]
 
         dataframes = [pd.read_csv(file_name, header=None, usecols=[1, 2, 3], names=['team', 'league', 'player-id'])
                       for file_name in input_file_names]
