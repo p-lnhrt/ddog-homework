@@ -7,7 +7,7 @@ import numpy as np
 
 
 class TripleCounter:
-    """ This class encapsulates the logic dedicated tho the computation of baseball team triples consisting of a 
+    """ This class encapsulates the logic dedicated to the computation of baseball team triples consisting of a
     minimum number of players.
     
     Attributes: 

@@ -33,7 +33,7 @@ stored on the local file system.
 **All input files are expected to be CSV text files all with the same number of columns and column ordering.**
 
 ## 1.2 Design overview
-In addition to the `main.py` entry-point script. The project consists in a `ddog` Python package made of 4 Python modules:
+In addition to the `main.py` entry-point script. The project consists in a `ddog` Python package made of 5 Python modules:
 * `cli.py`: This module gathers every function and object related to the parsing and validation of command-line arguments.
 In particular, we implemented an augmented argument parser object (class `CliArgParser`). 
 * `source.py`: This module gathers every function and object related to the downloading and reading of baseball-statistics
@@ -43,7 +43,7 @@ CSV files:
      * All the logic related to the downloading of CSV files using a formatted HTTP URL is encapsulated in the 
      `BaseballFilesDownloader` object.
      * All the operations related to the management of a local temporary directory (create if it does not exists, remove
-     if requested) are implemented using a context manager (object `TempDir`).
+     if requested) are implemented using a context manager (`TempDir` object).
 * `processing.py`: This module gather all the "business logic", i.e.: the code dedicated to the specific computation of the
 triples (encapsulated in the `TripleCounter` object). The `compute` method of the `TripleCounter` object expects a 
 `pandas.DataFrame` and returns its results as a list (possibly empty) of (`frozenset`, `int`) tuples.
@@ -52,6 +52,7 @@ sink. The appropriate sink object (currently two implementations: `ConsoleSink` 
 by the factory object `SinkFactory`. Each sink implementation must implement the sink interface described by the `Sink`
 abstract base class which consists of a single `write` method which expects a list (possibly empty) of 
 (`frozenset`, `int`) tuples.
+* `constants.py` : This helper module gathers the package's global constants.
 
 ## 1.3 Triple count computation 
 ### 1.3.1 Team and players identification
@@ -70,7 +71,7 @@ The code dedicated to the triples' computation can be found in the `ddog.process
 Section 1.3.1 showed that we actually only need 3 columns from the input files. To spare memory space, the `pandas` CSV
 reader has been set up such that only the required columns are loaded into memory. 
 
-The first stage of the computation is dedicated to get for each unique player its lists of played teams. Players with a 
+The first stage of the computation is dedicated to get for each unique player its list of played teams. Players with a 
 list of less than 3 teams are discarded since no triple can be generated with less than three teams. The second stage of
 the computation consists in building a triple counter by iterating over the players returned by the first stage. For each
 player, we generate all the 3-combinations (triples) from its played-team list and update the triple counter. The counter
@@ -79,7 +80,7 @@ of which are the triple counts. The counter object is finally filtered to keep o
 count.
 
 ## 1.4 Complexity analysis
-Let $n$, $p$ and $k$ the numbers of records, unique players and unique teams in the input dataset respectively.
+Let $n$, $p$ and $k$ be the numbers of records, unique players and unique teams in the input dataset respectively.
 
 During the first stage the computation, the loaded dataset goes through the following transformations:
 * Dropping duplicates: This operation can be performed with a $O(n)$ time and space complexity. Worse case scenario, there
@@ -94,8 +95,8 @@ First stage has therefore a $O(n)$ time and space complexity.
 
 The second stage of the computation consists for each player who played in at least 3 teams (worst case: $p$ players) to 
 generate all the 3-combinations from the teams the player played in (worst case: each player played in each of
-the $k$ teams) and update a counter (a dictionary) which the produced combinations. The counter is finally filtered over 
-its counts.
+the $k$ teams) and update a counter (a dictionary) with the produced combinations. The counter is finally filtered over 
+the counts.
 
 Notice: Using a dictionary as counter allows us to take advantage of a $O(1)$ time complexity on get and set operations.
 
@@ -104,7 +105,7 @@ $\binom(a, b) ~ O(a^{b})$ for $a$ big enough. Generating the combinations is the
 complexity (the generated dictionary/counter has at most $O(k^3)$ key-value pairs).
 
 ## 2. Execution environment
-To ensure our projects runs using the appropriate dependencies, we first create and activate a dedicated Python (virtual)
+To ensure our project runs using the appropriate dependencies, we first create and activate a dedicated Python (virtual)
 execution environment using the project's *requirements.txt* file. Change your current directory to the problem's 
 directory and run the following commands:
 
