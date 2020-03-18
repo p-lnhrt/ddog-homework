@@ -112,6 +112,7 @@ class BaseballFilesLoader:
         config (configparser.ConfigParser): Configuration object.
         min_year (int): Year of the first file to load.
         max_year (int): Year of the last file to load.
+        tmp_file_formatted_name (str): Name (formatted string) used to store baseball-statistics files on the local FS.
         regex (_sre.SRE_Pattern): Regex object used to filter the files located in `tmp_dir_path`.
     """
     def __init__(self, tmp_dir_path, config, min_year, max_year):
